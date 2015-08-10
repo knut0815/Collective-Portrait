@@ -24,6 +24,7 @@
 		7CDAD32BE4FA46701E3552C7 /* RunningBackground.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5CBF6AED6A17AC0C17F63CC4 /* RunningBackground.cpp */; };
 		80AE40254BBE0F03C25563C1 /* CLM.cc in Sources */ = {isa = PBXBuildFile; fileRef = BE9718AC2BA4516A804EE019 /* CLM.cc */; };
 		8AC885FBC5325950337592D2 /* ExpressionClassifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4F6F873496C3527A28B87F4 /* ExpressionClassifier.cpp */; };
+		8C2186411B79574E002214F8 /* lineRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C21863F1B79574E002214F8 /* lineRenderer.cpp */; };
 		8C39C2121B751EAF00A79080 /* faceUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C39C2101B751EAF00A79080 /* faceUtils.cpp */; };
 		8C9E53DB1B74082900D56419 /* lineFollower.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C9E53D91B74082900D56419 /* lineFollower.cpp */; };
 		8CC452521B731E8800C1B37D /* inkRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8CC452501B731E8800C1B37D /* inkRenderer.cpp */; };
@@ -159,6 +160,8 @@
 		8530EAD600CD792B81B2E79D /* legacy.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = legacy.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/legacy/legacy.hpp; sourceTree = SOURCE_ROOT; };
 		8738DE90218B1E9054A88B54 /* Helpers.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = Helpers.h; path = ../../../addons/ofxCv/libs/ofxCv/include/ofxCv/Helpers.h; sourceTree = SOURCE_ROOT; };
 		8A4DD23693DFAB8EC05FAA5D /* ofxCvShortImage.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxCvShortImage.cpp; path = ../../../addons/ofxOpenCv/src/ofxCvShortImage.cpp; sourceTree = SOURCE_ROOT; };
+		8C21863F1B79574E002214F8 /* lineRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lineRenderer.cpp; sourceTree = "<group>"; };
+		8C2186401B79574E002214F8 /* lineRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lineRenderer.h; sourceTree = "<group>"; };
 		8C39C2101B751EAF00A79080 /* faceUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = faceUtils.cpp; sourceTree = "<group>"; };
 		8C39C2111B751EAF00A79080 /* faceUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = faceUtils.h; sourceTree = "<group>"; };
 		8C9E53D91B74082900D56419 /* lineFollower.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lineFollower.cpp; sourceTree = "<group>"; };
@@ -799,10 +802,12 @@
 				E4B69E1F0A3A1BDC003C02F2 /* ofApp.h */,
 				8CC452501B731E8800C1B37D /* inkRenderer.cpp */,
 				8CC452511B731E8800C1B37D /* inkRenderer.h */,
-				8C9E53D91B74082900D56419 /* lineFollower.cpp */,
-				8C9E53DA1B74082900D56419 /* lineFollower.h */,
 				8C39C2101B751EAF00A79080 /* faceUtils.cpp */,
 				8C39C2111B751EAF00A79080 /* faceUtils.h */,
+				8C9E53D91B74082900D56419 /* lineFollower.cpp */,
+				8C9E53DA1B74082900D56419 /* lineFollower.h */,
+				8C21863F1B79574E002214F8 /* lineRenderer.cpp */,
+				8C2186401B79574E002214F8 /* lineRenderer.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -1000,6 +1005,7 @@
 				6E23C8DD86B189759F85B24F /* FDet.cc in Sources */,
 				8C39C2121B751EAF00A79080 /* faceUtils.cpp in Sources */,
 				DE44164709810C299EAAB202 /* IO.cc in Sources */,
+				8C2186411B79574E002214F8 /* lineRenderer.cpp in Sources */,
 				4F02F4D92C36436C945A6716 /* Patch.cc in Sources */,
 				091CD626FECB03B3A6B3A1B2 /* PAW.cc in Sources */,
 				E6E21460246219EE9394310F /* PDM.cc in Sources */,

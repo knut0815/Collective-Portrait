@@ -15,6 +15,7 @@ public:
     void setBackgroundTexture(ofImage &background);
     void setBrushTexture(ofImage &brush);
     void setLineFollowers(vector<LineFollower> &followers);
+    void calculateOffset();
     void loadShaders();
     void prepareFbos();
     void update();
@@ -72,6 +73,7 @@ private:
     
     //----Geometry
     vector<LineFollower>        m_followers;
+    ofPoint                     m_totalCentroid;
 };
 
 #endif

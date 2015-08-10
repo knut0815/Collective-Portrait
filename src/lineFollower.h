@@ -11,6 +11,7 @@ public:
     void update();
     void draw();
     void drawDebug();
+    ofPolyline getPath();
     
 private:
     

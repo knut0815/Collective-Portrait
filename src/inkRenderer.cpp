@@ -48,23 +48,23 @@ void InkRenderer::prepareFbos()
 
 void InkRenderer::setup(int width = 512, int height = 512, int precision = 4) {
     //----General settings
-    m_width = width;
-    m_height = height;
-    m_precision = precision;
-    m_isRendering = true;
+    m_width =           width;
+    m_height =          height;
+    m_precision =       precision;
+    m_isRendering =     true;
     
     //----Clamp the precision of the FBOs
     if (m_precision > MAX_FBO_PRECISION) {
-        m_precision = MAX_FBO_PRECISION;
+        m_precision =   MAX_FBO_PRECISION;
     }
     else if (m_precision < MIN_FBO_PRECISION) {
-        m_precision = MIN_FBO_PRECISION;
+        m_precision =   MIN_FBO_PRECISION;
     }
     
     //----Colors and FBO allocation
-    m_inkColor[0] = 0.3;
-    m_inkColor[1] = 0.5;
-    m_inkColor[2] = 0.8;
+    m_inkColor[0] =     0.3;
+    m_inkColor[1] =     0.5;
+    m_inkColor[2] =     0.8;
     m_backgroundColor.set(249, 250, 234);
     prepareFbos();
     
@@ -72,14 +72,19 @@ void InkRenderer::setup(int width = 512, int height = 512, int precision = 4) {
     loadShaders();
     
     //----Noise params
-    m_noiseSpeed = 0.01f;
-    m_noiseOffset = 1000.0f;
+    m_noiseSpeed =      0.01f;
+    m_noiseOffset =     1000.0f;
     
     //----Brush settings
-    m_offsetSplatter = 20.0f;
-    m_pctSplatter = 0.8f;
-    m_minBrushSize = 10.0f;
-    m_maxBrushSize = 50.0f;
+    m_offsetSplatter =  20.0f;
+    m_pctSplatter =     0.8f;
+    m_minBrushSize =    10.0f;
+    m_maxBrushSize =    50.0f;
+    
+    //----Shader uniforms
+    m_blurAmount =          1.5f / m_width; //1.5
+    m_displacementAmount =  2.0f; //2.0f
+    m_displacementSpeed =   0.01f; //0.01f
     
     //----Textures
     m_backgroundImage.loadImage("paper.jpg");
@@ -94,11 +99,6 @@ void InkRenderer::setup(int width = 512, int height = 512, int precision = 4) {
         m_brushImage.setColor(ofColor::white);
     }
     m_drawMode = MANUAL;
-    
-    //----Shader uniforms
-    m_blurAmount = 1.5f / m_width; //1.5
-    m_displacementAmount = 2.0f; //2.0f
-    m_displacementSpeed = 0.01f; //0.01f
 }
 
 void InkRenderer::setBackgroundTexture(ofImage &background)
@@ -114,6 +114,26 @@ void InkRenderer::setBrushTexture(ofImage &brush)
 void InkRenderer::setLineFollowers(vector<LineFollower> &followers)
 {
     m_followers = followers;
+    calculateOffset();
+}
+
+void InkRenderer::calculateOffset()
+{
+    //----Here, we calculate the bounding box that encloses ALL of the polylines
+    float minX = ofGetWidth();
+    float minY = ofGetHeight();
+    float maxX = 0;
+    float maxY = 0;
+    for (auto &lf: m_followers) {
+        ofRectangle rect = lf.getPath().getBoundingBox();
+        if (rect.x < minX) minX = rect.x;
+        if (rect.y < minY) minY = rect.y;
+        if (rect.x > maxX) maxX = rect.x;
+        if (rect.y > maxY) maxY = rect.y;
+    }
+    m_totalCentroid.set((minX + maxX) / 2,
+                        (minY + maxY) / 2);
+    
 }
 
 void InkRenderer::loadShaders()
@@ -179,7 +199,11 @@ void InkRenderer::update()
                 float nx = ofNoise(ofGetFrameNum() * 0.01 + i) * 255.0;
                 float ny = ofNoise(ofGetFrameNum() * 0.01 + i + 1000.0) * 255.0;
                 ofSetColor(nx, ny, 255, 50);
+                
+                ofPushMatrix();
+                ofTranslate(ofGetWidth()/2 - m_totalCentroid.x, ofGetHeight()/2 - m_totalCentroid.y);
                 m_followers[i].draw();
+                ofPopMatrix();
             }
         }
         else if (m_drawMode == ERASE)
@@ -259,6 +283,9 @@ void InkRenderer::draw()
     m_multiplyShader.setUniform1f("time", ofGetElapsedTimef());
     m_blurYFbo.draw(0, 0);
     m_multiplyShader.end();
+    
+    ofSetColor(ofColor::rosyBrown);
+    ofCircle(m_totalCentroid, 10);
 }
 
 

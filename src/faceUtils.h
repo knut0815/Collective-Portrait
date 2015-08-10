@@ -22,9 +22,12 @@ private:
     //----General vars
     int m_width;
     int m_height;
+    int m_minHaarArea;
+    double m_haarTimer;
+    double m_drawDuration;
+    bool m_isDrawing;
     
     //----Settings
-    bool                        m_shouldHaarRun;
     bool                        m_shouldDetectMotion;
     bool                        m_learnBackground;
     float                       m_threshold;

@@ -43,7 +43,8 @@ void LineFollower::draw()
     
     float n = ofNoise(ofGetElapsedTimef() + m_noiseOffset);
     float r = ofMap(n, 0, 1, MIN_RADIUS, MAX_RADIUS, true);
-    //r *= 100 / m_area;
+    //r *= 1 / m_area;
+    
     ofCircle(m_currentPosition, r);
     
     //----Secondary stroke
@@ -57,9 +58,11 @@ void LineFollower::draw()
 
 void LineFollower::drawDebug()
 {
-    ofPushStyle();
-    ofSetColor(ofColor::red);
     m_path.draw();
-    ofCircle(m_currentPosition, 4);
-    ofPopStyle();
+    ofCircle(m_path.getCentroid2D(), 4);
+}
+
+ofPolyline LineFollower::getPath()
+{
+    return m_path;
 }
