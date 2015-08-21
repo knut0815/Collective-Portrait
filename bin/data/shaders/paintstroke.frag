@@ -3,8 +3,7 @@
 in vec2 vs_texcoord;
 uniform sampler2D inputTexture;
 uniform float time;
-
-int radius = 8; // Large values (>= 20) result in very intense quantization and LOW framerates - a value of 8 is pretty solid
+uniform int radius; // Large values (>= 20) result in very intense quantization and LOW framerates - a value of 8 is pretty solid
 
 out vec4 outputColor;
 vec2 src_size = textureSize(inputTexture, 0);
@@ -16,7 +15,7 @@ void main() {
     // For a radius value of 8, this equals 81
     float n = float((radius + 1) * (radius + 1));
     
-    // Decalre two arrays, each of four vec3 variables
+    // Declare two arrays, each of four vec3 variables
     vec3 m[4];
     vec3 s[4];
     

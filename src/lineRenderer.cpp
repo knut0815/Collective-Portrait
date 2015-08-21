@@ -9,6 +9,7 @@ void LineRenderer::setup()
 {
     calculateJointCentroid();
     calculateAreaMinMax();
+    m_paintAlpha = 80.0f;
 }
 
 void LineRenderer::update()
@@ -19,25 +20,44 @@ void LineRenderer::update()
     }
 }
 
+bool LineRenderer::isEmpty()
+{
+    return m_lineFollowers.empty();
+}
+
 void LineRenderer::draw()
 {
-    for (auto &lf: m_lineFollowers)
+    ofPushMatrix();
+    ofTranslate(ofGetWidth()/2 - m_jointCentroid.x, ofGetHeight()/2 - m_jointCentroid.y);
+    for (int i = 0; i < m_lineFollowers.size(); i++)
     {
-        //should be calculating some noise color here
-        lf.draw();
+        float nx = ofNoise(ofGetFrameNum() * 0.01f + i) * 255.0f;
+        float ny = ofNoise(ofGetFrameNum() * 0.01f + i + 1000.0) * 255.0f;
+        ofSetColor(nx, ny, 255, m_paintAlpha);
+        m_lineFollowers[i].draw(m_minArea, m_maxArea);
     }
+    ofPopMatrix();
 }
 
 void LineRenderer::drawDebug()
 {
+    
+    ofSetColor(ofColor::green);
+    ofCircle(m_jointCentroid, 8);
+    
+    ofPushMatrix();
+    //----If we add this translation, our debug view will be aligned with the drawing but not the screen-space position of the face outline
+    //ofTranslate(ofGetWidth()/2 - m_jointCentroid.x, ofGetHeight()/2 - m_jointCentroid.y);
+    
     ofPushStyle();
     ofSetColor(ofColor::red);
     for (auto &lf: m_lineFollowers)
     {
         lf.drawDebug();
     }
-    ofCircle(m_jointCentroid, 8);
     ofPopStyle();
+    
+    ofPopMatrix();
 }
 
 void LineRenderer::addFollower(LineFollower &follower)
@@ -45,32 +65,29 @@ void LineRenderer::addFollower(LineFollower &follower)
     m_lineFollowers.push_back(follower);
 }
 
+/*
+ * This function calculates the joint centroid (i.e. the average of all of the centroids that make up the current render)
+ */
 void LineRenderer::calculateJointCentroid()
 {
-    //----Here, we calculate the bounding box that encloses ALL of the polylines
-    float minX = ofGetWidth();
-    float minY = ofGetHeight();
-    float maxX = 0;
-    float maxY = 0;
+    ofPoint sum;
     for (auto &lf: m_lineFollowers)
     {
-        ofRectangle rect = lf.getPath().getBoundingBox();
-        if (rect.x < minX) minX = rect.x;
-        if (rect.y < minY) minY = rect.y;
-        if (rect.x > maxX) maxX = rect.x;
-        if (rect.y > maxY) maxY = rect.y;
+        sum += lf.getPath().getCentroid2D();
     }
-   m_jointCentroid.set((minX + maxX) / 2,
-                       (minY + maxY) / 2);
+    m_jointCentroid.set(sum / m_lineFollowers.size());
 }
 
+/*
+ * This function calculates the min / max areas of all of the polylines that make up the current render
+ */
 void LineRenderer::calculateAreaMinMax()
 {
     float min = ofGetWidth() * ofGetHeight();
     float max = 0;
     for (auto &lf: m_lineFollowers)
     {
-        float lfArea = lf.getPath().getArea();
+        float lfArea = lf.getArea();
         if (lfArea < min) min = lfArea;
         if (lfArea > max) max = lfArea;
     }
@@ -81,4 +98,9 @@ void LineRenderer::calculateAreaMinMax()
 void LineRenderer::clear()
 {
     m_lineFollowers.clear();
+}
+
+ofPoint LineRenderer::getJointCentroid()
+{
+    return m_jointCentroid;
 }

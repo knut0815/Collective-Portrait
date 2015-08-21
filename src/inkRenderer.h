@@ -2,41 +2,43 @@
 #define __collectivePortrait__inkRenderer__
 
 #include "ofMain.h"
-#include "lineFollower.h"
+#include "lineRenderer.h"
+#include "particleSystem.h"
 
 class InkRenderer {
+    
 public:
-    enum                        DRAWMODE {MANUAL, FOLLOWERS, ERASE};
+    
+    enum                        DRAWMODE {MANUAL, FOLLOWERS, PARTICLES, ERASE};
     DRAWMODE                    m_drawMode;
     
-    //----Functions and constructors
     InkRenderer();
     void setup(int width, int height, int precision);
     void setBackgroundTexture(ofImage &background);
     void setBrushTexture(ofImage &brush);
-    void setLineFollowers(vector<LineFollower> &followers);
-    void calculateOffset();
+    void setLineRenderer(LineRenderer &renderer);
+    void resetNumDrawingsCompleted();
     void loadShaders();
     void prepareFbos();
     void update();
     void draw();
+    void drawDebug();
     void setDrawMode(DRAWMODE mode);
-    
-    // Unused
-    void begin();
-    void end();
     void clear();
+    
 private:
+    
     //----General vars and constants
-    const int                   MAX_FBO_PRECISION = 16;
-    const int                   MIN_FBO_PRECISION = 4;
+    static const int            MAX_FBO_PRECISION = 16;
+    static const int            MIN_FBO_PRECISION = 4;
+    static const int            SPLATTER_OFFSET = 20;
+
     int                         m_width;
     int                         m_height;
     int                         m_precision;
-    bool                        m_isRendering;
+    int                         m_numDrawingsCompleted;
     
     //----Settings
-    float                       m_offsetSplatter;
     float                       m_pctSplatter;
     float                       m_noiseSpeed;
     float                       m_noiseOffset;
@@ -70,10 +72,13 @@ private:
     float                       m_blurAmount;
     float                       m_displacementAmount;
     float                       m_displacementSpeed;
+    int                         m_paintRadius;
     
     //----Geometry
-    vector<LineFollower>        m_followers;
-    ofPoint                     m_totalCentroid;
+    LineRenderer                m_lineRenderer;
+    ofPoint                     m_drawOffset;
+    ParticleSystem              m_ps;
+    
 };
 
 #endif

@@ -1,73 +1,45 @@
 #include "ofApp.h"
 
 //--------------------------------------------------------------
-void ofApp::setup(){
-    //----Global settings
+void ofApp::setup()
+{
     ofDisableArbTex();
     ofEnableAlphaBlending();
     ofSetVerticalSync(true);
     
-    //----Init ink renderer and utils
-    ink.setup(ofGetWidth(), ofGetHeight(), 4);
-    utils.setup(640, 480, &ink);
-    m_drawDebug = false;
+    ink.setup(ofGetWidth(), ofGetHeight(), 8); //WAS 8
+    scanner.setup(640, 480, &ink);
+    m_drawTimeout =         800;
+    m_drawDebug =           false;
+}
+
+void ofApp::exit()
+{
+    scanner.exit();
 }
 
 //--------------------------------------------------------------
-void ofApp::update(){
+void ofApp::update()
+{
     ink.update();
-    utils.update();
+    scanner.update();
 }
 
 //--------------------------------------------------------------
-void ofApp::draw(){
+void ofApp::draw()
+{
     ink.draw();
-    if (m_drawDebug) utils.drawDebug();
-}
-
-//--------------------------------------------------------------
-void ofApp::keyPressed(int key){
-//    if(key == OF_KEY_UP) {
-//        threshold++;
-//        if (threshold > 255.0) threshold = 255.0;
-//    }
-//    else if (key == OF_KEY_DOWN) {
-//        threshold--;
-//        if (threshold < 0.0) threshold = 0.0;
-//    }
-//    else if (key == OF_KEY_LEFT) {
-//        m_minBlobArea -= 10;
-//        if (m_minBlobArea < 0) m_minBlobArea = 0;
-//    }
-//    else if (key == OF_KEY_RIGHT) {
-//        m_minBlobArea += 10;
-//        if (m_minBlobArea > m_maxBlobArea - 1) m_minBlobArea = m_maxBlobArea - 1;
-//    }
-    if (key == ' ') {
-        utils.reset();
-    }
-    else if (key == 'd' || key == 'D') {
-        m_drawDebug = !m_drawDebug;
+    if (m_drawDebug)
+    {
+        ink.drawDebug();
+        scanner.draw();
+        ofDrawBitmapString("FPS: " + ofToString(ofGetFrameRate()), ofPoint(ofGetWidth()-200, 10));
     }
 }
 
 //--------------------------------------------------------------
-void ofApp::keyReleased(int key){
-
+void ofApp::keyPressed(int key)
+{
+    if (key == ' ') scanner.reset();
+    else if (key == 'd' || key == 'D') m_drawDebug = !m_drawDebug;
 }
-
-//--------------------------------------------------------------
-void ofApp::mouseMoved(int x, int y ){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseDragged(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mousePressed(int x, int y, int button){
-
-}
-

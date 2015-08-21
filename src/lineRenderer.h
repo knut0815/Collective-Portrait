@@ -5,20 +5,26 @@
 #include "lineFollower.h"
 
 class LineRenderer {
+    
 public:
+    
     LineRenderer();
     void setup();
     void update();
     void draw();
     void drawDebug();
+    bool isEmpty();
     void addFollower(LineFollower &follower);
     void calculateJointCentroid();
     void calculateAreaMinMax();
     void clear();
+    ofPoint getJointCentroid();
     
 private:
+    
     vector<LineFollower>    m_lineFollowers;
     ofPoint                 m_jointCentroid;
+    float                   m_paintAlpha;
     float                   m_minArea;
     float                   m_maxArea;
 

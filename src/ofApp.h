@@ -2,24 +2,22 @@
 
 #include "ofMain.h"
 #include "ofxOpenCv.h"
-
 #include "inkRenderer.h"
 #include "lineFollower.h"
-#include "faceUtils.h"
-
+#include "faceScanner.h"
+#define DEBUG
 class ofApp : public ofBaseApp{
     
 public:
+    
     void setup();
+    void exit();
     void update();
     void draw();
     void keyPressed(int key);
-    void keyReleased(int key);
-    void mouseMoved(int x, int y );
-    void mouseDragged(int x, int y, int button);
-    void mousePressed(int x, int y, int button);
     
     InkRenderer                 ink;
-    FaceUtils                   utils;
+    FaceScanner                 scanner;
+    int                         m_drawTimeout;
     bool                        m_drawDebug;
 };
