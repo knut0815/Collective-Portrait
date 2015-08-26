@@ -17,7 +17,6 @@ public:
     void setBackgroundTexture(ofImage &background);
     void setBrushTexture(ofImage &brush);
     void setLineRenderer(LineRenderer &renderer);
-    void resetNumDrawingsCompleted();
     void loadShaders();
     void prepareFbos();
     void update();
@@ -36,7 +35,6 @@ private:
     int                         m_width;
     int                         m_height;
     int                         m_precision;
-    int                         m_numDrawingsCompleted;
     
     //----Settings
     float                       m_pctSplatter;
@@ -78,6 +76,7 @@ private:
     LineRenderer                m_lineRenderer;
     ofPoint                     m_drawOffset;
     ParticleSystem              m_ps;
+    ofImage                     m_descriptionImage;
     
 };
 

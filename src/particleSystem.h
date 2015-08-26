@@ -4,9 +4,9 @@
 #include "ofMain.h"
 #include "particle.h"
 
-#define NUM_PARTICLES 50
+#define NUM_PARTICLES 100
 #define DIST_THRESHOLD 50
-#define BRUSH_SIZE 30
+#define BRUSH_SIZE 40
 
 class ParticleSystem {
 public:

@@ -35,7 +35,7 @@ void LineFollower::init()
     m_area =                m_path.getArea() * -1;
     m_perimeterLength =     m_path.getPerimeter();
     m_noiseOffset =         ofRandom(1000.0f);
-    m_travelSpeed =         0.03f * (100.0f / m_perimeterLength);
+    m_travelSpeed =         0.02f * (100.0f / m_perimeterLength);
     m_pctTraveled =         0.0f;
     m_currentPosition =     m_path.getPointAtPercent(m_pctTraveled);
     m_shouldDrawPath =      false;

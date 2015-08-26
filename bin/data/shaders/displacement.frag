@@ -16,7 +16,7 @@ void main() {
     displace *= displacementAmount;
     float b = texture(tex0, vs_texcoord + displace).b;
     
-    noiseValues = mix(noiseValues, vec2(0.5, 0.5), displacementSpeed); //try 0.01 too
+    noiseValues = mix(noiseValues, vec2(0.5, 0.5), displacementSpeed);
     
     out_color = vec4(noiseValues.r, noiseValues.g, b, 1.0);
 }

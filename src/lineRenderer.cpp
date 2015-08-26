@@ -27,8 +27,14 @@ bool LineRenderer::isEmpty()
 
 void LineRenderer::draw()
 {
-    ofPushMatrix();
-    ofTranslate(ofGetWidth()/2 - m_jointCentroid.x, ofGetHeight()/2 - m_jointCentroid.y);
+    ofPushMatrix();                                             //----PUSH MATRIX STACK
+    ofTranslate
+            (
+            (ofGetWidth()/2 -  m_jointCentroid.x) / 2,
+            (ofGetHeight()/2 -  m_jointCentroid.y) / 2
+            );
+    ofScale(2.0f, 2.0f);
+    
     for (int i = 0; i < m_lineFollowers.size(); i++)
     {
         float nx = ofNoise(ofGetFrameNum() * 0.01f + i) * 255.0f;
@@ -36,7 +42,7 @@ void LineRenderer::draw()
         ofSetColor(nx, ny, 255, m_paintAlpha);
         m_lineFollowers[i].draw(m_minArea, m_maxArea);
     }
-    ofPopMatrix();
+    ofPopMatrix();                                              //----POP MATRIX STACK
 }
 
 void LineRenderer::drawDebug()

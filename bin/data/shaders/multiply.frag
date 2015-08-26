@@ -11,7 +11,7 @@ in vec2 vs_texcoord;
 
 void main() {
     // Add a little shake to the top pigment layer
-    float noise = fract(sin(time * 40.0)) * 0.001;
+    float noise = fract(sin(time * 40.0)) * 0.0005; //was 0.001
     
     // Mix the blurred and dry layers
     vec4 sample1 = texture(tex0, vs_texcoord);

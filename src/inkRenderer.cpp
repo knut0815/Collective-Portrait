@@ -64,24 +64,21 @@ void InkRenderer::setup(int width = 512, int height = 512, int precision = 4) {
     m_inkColor[1] =     0.5;
     m_inkColor[2] =     0.8;
     m_backgroundColor.set(249, 250, 234);
-    
     prepareFbos();
     loadShaders();
     
     //----Settings
-    m_noiseSpeed =      0.01f;
-    m_noiseOffset =     1000.0f;
-    m_pctSplatter =     0.8f;
-    m_minBrushSize =    10.0f;
-    m_maxBrushSize =    50.0f;
-    m_numDrawingsCompleted = 0;
+    m_noiseSpeed =          0.01f;
+    m_noiseOffset =         1000.0f;
+    m_pctSplatter =         0.8f;
+    m_minBrushSize =        10.0f;
+    m_maxBrushSize =        50.0f;
     
     //----Shader uniforms
-    m_blurAmount =          5.0f / m_width; //1.5
-    m_displacementAmount =  2.0f;           //2.0f
-    m_displacementSpeed =   0.01f;          //0.01f
-    m_paintRadius =         8; // WAS 8
-    
+    m_blurAmount =          5.0f / m_width; //5.0f
+    m_displacementAmount =  1.0f;           //2.0f
+    m_displacementSpeed =   0.005f;          //0.01f
+    m_paintRadius =         4;              //4
     if (m_blurAmount == 0 ||
         m_displacementAmount == 0.0f ||
         m_displacementSpeed == 0.0f ||
@@ -89,16 +86,18 @@ void InkRenderer::setup(int width = 512, int height = 512, int precision = 4) {
     {
         ofLogWarning("Ink Renderer") << "Warning: one or more shader uniforms are set to zero. Is this what you want?";
     }
+    m_drawMode = FOLLOWERS;
     
     //----Textures
     m_backgroundImage.loadImage("paper.jpg");
     m_brushImage.loadImage("brush.png");
-    
     if (!m_backgroundImage.isAllocated() || !m_brushImage.isAllocated())
     {
         ofLogWarning("Ink Renderer") << "Warning: no background and/or brush image has been loaded...defaulting to a white.";
     }
-    m_drawMode = FOLLOWERS;
+    
+    //----The title and description are baked into this image
+    m_descriptionImage.loadImage("instructions.png");
 }
 
 void InkRenderer::setBackgroundTexture(ofImage &background)
@@ -113,22 +112,9 @@ void InkRenderer::setBrushTexture(ofImage &brush)
 
 void InkRenderer::setLineRenderer(LineRenderer &renderer)
 {
-    //----We keep track of how many portraits we've drawn and clear the entire canvas if we've exceeded a certain threshold
-    m_numDrawingsCompleted++;
-    
-//    ofSaveScreen("screenshots/image_" + ofGetTimestampString() + ".png");
-//    if (m_numDrawingsCompleted >= 3) {
-//        m_numDrawingsCompleted = 0;
-//        clear();
-//    }
     clear();
     m_lineRenderer = renderer;
     m_drawOffset = renderer.getJointCentroid();
-}
-
-void InkRenderer::resetNumDrawingsCompleted()
-{
-    m_numDrawingsCompleted = 0;
 }
 
 void InkRenderer::loadShaders()
@@ -278,16 +264,21 @@ void InkRenderer::draw()
     m_multiplyShader.setUniform1f("time", ofGetElapsedTimef());
     m_blurYFbo.draw(0, 0);
     m_multiplyShader.end();
+    
+    //----Instructional text
+    if (m_drawMode == PARTICLES) {
+        ofPushStyle();
+        ofSetColor(ofColor::white);
+        m_descriptionImage.draw(ofGetWidth()/2 - m_descriptionImage.width/2,
+                                ofGetHeight()/2 - m_descriptionImage.height/2,
+                                500, 500);
+        ofPopStyle();
+    }
 }
 
 void InkRenderer::drawDebug()
 {
     m_lineRenderer.drawDebug();
-    
-    ofPushStyle();
-    ofSetColor(60, 60, 60);
-    ofDrawBitmapString("Number of Drawings Completed: " + ofToString(m_numDrawingsCompleted), ofPoint(10, ofGetHeight() - 10));
-    ofPopStyle();
 }
 
 void InkRenderer::clear()

@@ -7,8 +7,8 @@ void ofApp::setup()
     ofEnableAlphaBlending();
     ofSetVerticalSync(true);
     
-    ink.setup(ofGetWidth(), ofGetHeight(), 8); //WAS 8
-    scanner.setup(640, 480, &ink);
+    ink.setup(ofGetWidth(), ofGetHeight(), 1); //WAS 8
+    scanner.setup(640, 480, &ink); //was 2* width and height...let's try at this resolution and scale the polylines instead
     m_drawTimeout =         800;
     m_drawDebug =           false;
 }
